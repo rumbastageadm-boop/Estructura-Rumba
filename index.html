@@ -1,1 +1,1542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RUMBA STAGE — Plan de Gestión Operacional</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
+  :root {
+    --verde: #1DB954;
+    --amarillo: #F5D400;
+    --rojo: #C8102E;
+    --naranja: #E87722;
+    --morado: #7B2FBE;
+    --azul: #3B82F6;
+    --bg: #0D0D0D;
+    --card-bg: #181818;
+    --card-border: rgba(255,255,255,0.07);
+    --muted: rgba(255,255,255,0.45);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: #E8E6DE;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,13,13,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 54px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px; font-weight: 800;
+    color: var(--amarillo);
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+  }
+  .nav-tabs {
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    background: none; border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px; font-weight: 500;
+    padding: 0 12px;
+    height: 54px; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+  }
+  .nav-tab:hover { color: #fff; }
+  .nav-tab.active { color: var(--amarillo); border-bottom-color: var(--amarillo); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0D1F0A 0%, #0D0D0D 55%, #1A0A00 100%);
+    padding: 4.5rem 2rem 3.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--card-border);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(29,185,84,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(29,185,84,0.12);
+    border: 1px solid rgba(29,185,84,0.35);
+    color: var(--verde);
+    font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 14px; border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -2px; color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 span { color: var(--amarillo); }
+  .hero-sub { font-size: 15px; color: var(--muted); max-width: 560px; margin: 1rem auto 2.5rem; }
+  .hero-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin-top: 2rem; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--amarillo); display: block; }
+  .hero-stat .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* SECTIONS */
+  .section { display: none; padding: 2.5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  .section-header { margin-bottom: 2rem; }
+  .section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    letter-spacing: -1px; color: #fff; margin-bottom: 0.3rem;
+  }
+  .section-header p { color: var(--muted); font-size: 13.5px; }
+  .accent-line { width: 36px; height: 3px; background: var(--verde); border-radius: 2px; margin-bottom: 0.8rem; }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.9rem; }
+  .card-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+  .card h3 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+  .card p { font-size: 13px; color: #B0AEA6; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px;
+    margin-right: 5px; margin-bottom: 4px;
+  }
+  .badge-verde  { background: rgba(29,185,84,0.13);  color: #4ade80; border: 1px solid rgba(29,185,84,0.3); }
+  .badge-amarillo { background: rgba(245,212,0,0.13);  color: #ffd700; border: 1px solid rgba(245,212,0,0.3); }
+  .badge-rojo   { background: rgba(200,16,46,0.13);   color: #f87171; border: 1px solid rgba(200,16,46,0.3); }
+  .badge-morado { background: rgba(123,47,190,0.13);  color: #c084fc; border: 1px solid rgba(123,47,190,0.3); }
+  .badge-naranja { background: rgba(232,119,34,0.13); color: #fb923c; border: 1px solid rgba(232,119,34,0.3); }
+  .badge-azul   { background: rgba(59,130,246,0.13);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+
+  /* SECTOR BOX */
+  .sector-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 1.4rem; text-align: center;
+  }
+  .sector-box .icon { font-size: 1.9rem; margin-bottom: 0.7rem; display: block; }
+  .sector-box h3 { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem; }
+  .sector-box p { font-size: 11.5px; color: var(--muted); }
+  .sector-box .count { font-family: 'Syne', sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--amarillo); display: block; margin-top: 0.4rem; }
+
+  /* TURNOS */
+  .turno-card { border-radius: 10px; padding: 1.2rem; margin-bottom: 0.8rem; border-left: 3px solid; }
+  .turno-a { background: rgba(29,185,84,0.07);  border-color: var(--verde); }
+  .turno-b { background: rgba(245,212,0,0.07);  border-color: var(--amarillo); }
+  .turno-c { background: rgba(123,47,190,0.07); border-color: #a855f7; }
+  .turno-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem; }
+  .turno-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: #fff; }
+  .time-badge { font-size: 11.5px; font-weight: 600; padding: 3px 11px; border-radius: 20px; background: rgba(255,255,255,0.07); color: #E8E6DE; }
+  .personal-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .personal-item { font-size: 11.5px; padding: 3px 9px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: #D0CEC6; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li { display: flex; align-items: flex-start; gap: 9px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; color: #C0BEB6; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-box { width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid rgba(29,185,84,0.45); flex-shrink: 0; margin-top: 3px; }
+
+  /* MARKETING */
+  .mkt-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.4rem; position: relative; overflow: hidden; }
+  .mkt-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+  .mkt-card.verde::before   { background: var(--verde); }
+  .mkt-card.amarillo::before { background: var(--amarillo); }
+  .mkt-card.rojo::before    { background: var(--rojo); }
+  .mkt-card.morado::before  { background: #a855f7; }
+  .mkt-card.naranja::before { background: var(--naranja); }
+  .mkt-card.azul::before    { background: var(--azul); }
+  .mkt-card h3 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.8rem; }
+  .mkt-card ul { list-style: none; }
+  .mkt-card ul li { font-size: 12.5px; color: #B0AEA6; padding: 3px 0; }
+  .mkt-card ul li::before { content: '→ '; color: var(--verde); font-weight: 600; }
+
+  /* EDT */
+  .edt-item { padding: 0.85rem 1.1rem; border-radius: 8px; margin-bottom: 0.4rem; display: flex; align-items: flex-start; gap: 11px; }
+  .edt-num { font-family: 'Syne', sans-serif; font-size: 11.5px; font-weight: 700; min-width: 26px; color: var(--amarillo); }
+  .edt-content h4 { font-size: 13.5px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .edt-content p { font-size: 12px; color: #A0A09A; }
+  .edt-l1 { background: rgba(245,212,0,0.06);  border-left: 2px solid var(--amarillo); }
+  .edt-l2 { background: rgba(29,185,84,0.05);  border-left: 2px solid var(--verde);    margin-left: 1.5rem; }
+  .edt-l3 { background: rgba(255,255,255,0.02); border-left: 1px solid var(--card-border); margin-left: 3rem; }
+
+  /* FLUXO */
+  .fluxo-step { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 0.7rem; }
+  .fluxo-dot { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 11.5px; font-weight: 800; flex-shrink: 0; }
+  .fluxo-dot.verde   { background: rgba(29,185,84,0.18);  color: var(--verde);  border: 1.5px solid rgba(29,185,84,0.4); }
+  .fluxo-dot.amarillo { background: rgba(245,212,0,0.18);  color: var(--amarillo); border: 1.5px solid rgba(245,212,0,0.4); }
+  .fluxo-dot.rojo    { background: rgba(200,16,46,0.18);  color: #f87171; border: 1.5px solid rgba(200,16,46,0.4); }
+  .fluxo-dot.morado  { background: rgba(123,47,190,0.18); color: #c084fc; border: 1.5px solid rgba(123,47,190,0.4); }
+  .fluxo-dot.naranja { background: rgba(232,119,34,0.18); color: #fb923c; border: 1.5px solid rgba(232,119,34,0.4); }
+  .fluxo-content { flex: 1; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .fluxo-step:last-child .fluxo-content { border-bottom: none; }
+  .fluxo-content h4 { font-size: 13.5px; font-weight: 600; color: #fff; }
+  .fluxo-content p { font-size: 12px; color: #A0A09A; }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th { background: rgba(255,255,255,0.04); color: var(--amarillo); font-family: 'Syne', sans-serif; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; padding: 9px 13px; text-align: left; border-bottom: 1px solid var(--card-border); }
+  td { padding: 8px 13px; color: #C0BEB6; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ORG */
+  .org-level { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0; }
+  .org-node { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 0.7rem 1.1rem; text-align: center; min-width: 110px; }
+  .org-node.top { background: linear-gradient(135deg, #1A3A1A, #0D1F0A); border-color: rgba(29,185,84,0.4); }
+  .org-node.mid { background: rgba(245,212,0,0.05); border-color: rgba(245,212,0,0.22); }
+  .org-node .role { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--amarillo); display: block; margin-bottom: 2px; }
+  .org-node .name { font-size: 12px; color: #E8E6DE; }
+  .org-connector { width: 1px; height: 20px; background: var(--card-border); margin: 0 auto; }
+
+  /* ==============================
+     REPORTE DIARIO — ESTILOS
+     ============================== */
+  .reporte-wrapper {
+    background: #111;
+    border: 1px solid rgba(245,212,0,0.2);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .reporte-header {
+    background: linear-gradient(135deg, #1A2E0A, #0D1A00);
+    border-bottom: 1px solid rgba(29,185,84,0.25);
+    padding: 1.4rem 1.8rem;
+    display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .reporte-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;
+    margin-bottom: 0.2rem;
+  }
+  .reporte-header p { font-size: 12px; color: var(--muted); }
+  .reporte-badge {
+    background: rgba(29,185,84,0.15); border: 1px solid rgba(29,185,84,0.3);
+    color: #4ade80; font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 4px 12px; border-radius: 20px;
+    white-space: nowrap; align-self: flex-start;
+  }
+
+  .reporte-body { padding: 1.8rem; }
+
+  .rep-meta {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);
+    border-radius: 10px; padding: 1.1rem; margin-bottom: 1.5rem;
+  }
+  .rep-field { display: flex; flex-direction: column; gap: 4px; }
+  .rep-label { font-size: 10.5px; font-weight: 600; color: var(--amarillo); text-transform: uppercase; letter-spacing: 0.8px; }
+  .rep-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 7px; padding: 7px 11px;
+    color: #E8E6DE; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; outline: none; width: 100%;
+    transition: border-color .2s;
+  }
+  .rep-input:focus { border-color: rgba(29,185,84,0.5); }
+  .rep-input::placeholder { color: rgba(255,255,255,0.2); }
+
+  .dia-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .dia-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted); font-size: 11.5px; font-weight: 600;
+    padding: 5px 10px; border-radius: 7px; cursor: pointer;
+    transition: all .15s; font-family: 'DM Sans', sans-serif;
+  }
+  .dia-btn:hover  { background: rgba(255,255,255,0.08); color: #fff; }
+  .dia-btn.active { background: rgba(29,185,84,0.2); border-color: rgba(29,185,84,0.5); color: #4ade80; }
+
+  .rep-section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 700; color: var(--amarillo);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin: 1.5rem 0 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(245,212,0,0.15);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .rep-section-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(245,212,0,0.15); border: 1px solid rgba(245,212,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800; color: var(--amarillo);
+    flex-shrink: 0;
+  }
+
+  /* Tabla sectores */
+  .sector-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .sector-table th {
+    background: rgba(255,255,255,0.03);
+    color: rgba(255,255,255,0.45);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 8px 12px; text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .sector-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+  .sector-table tr:last-child td { border-bottom: none; }
+  .sector-name { font-weight: 600; color: #E8E6DE; font-size: 13px; }
+
+  .incident-toggle { display: flex; gap: 8px; align-items: center; }
+  .tog-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted); font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all .15s;
+  }
+  .tog-btn.yes:hover, .tog-btn.yes.active  { background: rgba(200,16,46,0.2);  border-color: rgba(200,16,46,0.5);  color: #f87171; }
+  .tog-btn.no:hover,  .tog-btn.no.active   { background: rgba(29,185,84,0.2);  border-color: rgba(29,185,84,0.5);  color: #4ade80; }
+
+  /* Socios externos */
+  .socios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; }
+  .seg-rating { display: flex; gap: 6px; flex-wrap: wrap; }
+  .seg-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted); font-size: 11px; font-weight: 600;
+    padding: 5px 11px; border-radius: 6px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all .15s;
+  }
+  .seg-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .seg-btn.excelente.active { background: rgba(29,185,84,0.2);  border-color: rgba(29,185,84,0.5);  color: #4ade80; }
+  .seg-btn.regular.active   { background: rgba(245,212,0,0.2);  border-color: rgba(245,212,0,0.5);  color: #ffd700; }
+  .seg-btn.mal.active       { background: rgba(200,16,46,0.2);  border-color: rgba(200,16,46,0.5);  color: #f87171; }
+
+  /* RRHH Refuerzo rows */
+  .refuerzo-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr; gap: 0.6rem; margin-bottom: 0.6rem; }
+
+  /* Financiero */
+  .fin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; }
+  .fin-card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 9px; padding: 0.9rem 1rem;
+  }
+  .fin-card .fin-label { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+  .fin-card .fin-input-wrap { display: flex; align-items: center; gap: 5px; }
+  .fin-card .currency { font-size: 14px; font-weight: 700; color: #4ade80; }
+
+  /* Textarea */
+  .rep-textarea {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 10px 13px;
+    color: #E8E6DE; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; outline: none; width: 100%; resize: vertical;
+    min-height: 80px; transition: border-color .2s;
+    line-height: 1.6;
+  }
+  .rep-textarea:focus { border-color: rgba(29,185,84,0.5); }
+  .rep-textarea::placeholder { color: rgba(255,255,255,0.18); font-style: italic; }
+
+  /* Firma section */
+  .firma-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.8rem;
+  }
+  .firma-box {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 9px; padding: 1rem;
+  }
+  .firma-box p { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.5rem; }
+  .firma-line { border-bottom: 1px solid rgba(255,255,255,0.15); height: 32px; margin-bottom: 5px; }
+  .firma-sublabel { font-size: 11px; color: rgba(255,255,255,0.25); text-align: center; }
+
+  /* Recomendaciones */
+  .rec-card {
+    background: rgba(29,185,84,0.05); border: 1px solid rgba(29,185,84,0.18);
+    border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 0.6rem;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .rec-num {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(29,185,84,0.2); border: 1px solid rgba(29,185,84,0.35);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #4ade80;
+  }
+  .rec-card h4 { font-size: 13.5px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .rec-card p  { font-size: 12.5px; color: #A0A09A; }
+
+  /* Botones acción */
+  .btn-group { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .btn-action {
+    background: rgba(29,185,84,0.12); border: 1px solid rgba(29,185,84,0.35);
+    color: #4ade80; font-family: 'Syne', sans-serif;
+    font-size: 12px; font-weight: 700; padding: 9px 20px;
+    border-radius: 8px; cursor: pointer; transition: all .2s;
+    letter-spacing: 0.3px;
+  }
+  .btn-action:hover { background: rgba(29,185,84,0.22); }
+  .btn-action.secondary {
+    background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15);
+    color: #E8E6DE;
+  }
+  .btn-action.secondary:hover { background: rgba(255,255,255,0.09); }
+
+  .alerta {
+    background: rgba(245,212,0,0.08); border: 1px solid rgba(245,212,0,0.25);
+    border-radius: 8px; padding: 0.8rem 1rem; margin: 0.8rem 0;
+    font-size: 12.5px; color: #ffd700; display: flex; gap: 8px; align-items: flex-start;
+  }
+
+  @media (max-width: 600px) {
+    .firma-row { grid-template-columns: 1fr; }
+    .refuerzo-row { grid-template-columns: 1fr; }
+    .rep-meta { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🍺 RUMBA STAGE</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active"   onclick="show('vision')">Visión General</button>
+    <button class="nav-tab"          onclick="show('organigrama')">Organigrama</button>
+    <button class="nav-tab"          onclick="show('turnos')">Turnos</button>
+    <button class="nav-tab"          onclick="show('flujo')">Flujo</button>
+    <button class="nav-tab"          onclick="show('edt')">EDT</button>
+    <button class="nav-tab"          onclick="show('checklist')">Checklists</button>
+    <button class="nav-tab"          onclick="show('marketing')">Marketing</button>
+    <button class="nav-tab"          onclick="show('roles')">Roles</button>
+    <button class="nav-tab"          onclick="show('reporte')">📋 Reporte Diario</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">📋 Plan Operacional Completo</div>
+  <h1>RUMBA <span>STAGE</span></h1>
+  <p class="hero-sub">Local de entretenimiento para estudiantes brasileños — Ciudad del Este, Paraguay. Operación diurna y nocturna con múltiples sectores.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">4</span><span class="lbl">Sectores</span></div>
+    <div class="hero-stat"><span class="num">55</span><span class="lbl">Mesas</span></div>
+    <div class="hero-stat"><span class="num">3</span><span class="lbl">Equipos</span></div>
+    <div class="hero-stat"><span class="num">6:30</span><span class="lbl">Apertura</span></div>
+    <div class="hero-stat"><span class="num">7d</span><span class="lbl">Semana</span></div>
+  </div>
+</div>
+
+<!-- ============================= VISIÓN GENERAL ============================= -->
+<div id="vision" class="section active">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>Visión General de Sectores</h2>
+    <p>Estructura física, capacidad y horarios de operación por sector</p>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:2rem;">
+    <div class="sector-box">
+      <span class="icon">🍺</span>
+      <h3>Chopería</h3>
+      <p>Show en vivo · Músicos BR</p>
+      <span class="count">32</span>
+      <small style="color:var(--muted);font-size:11px;">mesas</small>
+    </div>
+    <div class="sector-box">
+      <span class="icon">🎤</span>
+      <h3>Karaoke</h3>
+      <p>Shows temáticos · Reservas BDay</p>
+      <span class="count">16</span>
+      <small style="color:var(--muted);font-size:11px;">mesas</small>
+    </div>
+    <div class="sector-box">
+      <span class="icon">🎱</span>
+      <h3>Billar</h3>
+      <p>Comparte escenario c/ Chopería</p>
+      <span class="count">7</span>
+      <small style="color:var(--muted);font-size:11px;">mesas</small>
+    </div>
+    <div class="sector-box">
+      <span class="icon">🎧</span>
+      <h3>Discoteca</h3>
+      <p>Socios externos · Vie/Sáb</p>
+      <span class="count">∞</span>
+      <small style="color:var(--muted);font-size:11px;">pista de baile</small>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:2rem;">
+    <div class="accent-line" style="background:var(--amarillo);"></div>
+    <h2>Horarios de Operación</h2>
+    <p>Cronograma semanal completo por actividad</p>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Período</th><th>Horario</th><th>Actividad</th><th>Días</th><th>Sector</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>🌅 Mañana</td><td><strong style="color:#fff;">06:30 – 10:30</strong></td><td>Desayuno completo</td><td>Lun - Vie</td><td><span class="badge badge-verde">Chopería / Caja</span></td></tr>
+          <tr><td>☀️ Almuerzo</td><td><strong style="color:#fff;">11:00 – 15:00</strong></td><td>Plato del día + a la carta</td><td>Lun - Vie</td><td><span class="badge badge-verde">Todos</span></td></tr>
+          <tr><td>🌤 Tarde</td><td><strong style="color:#fff;">15:00 – 18:00</strong></td><td>Atención regular</td><td>Lun – Mar</td><td><span class="badge badge-amarillo">Equipo A cobertura</span></td></tr>
+          <tr><td>🌆 Tarde/Noche</td><td><strong style="color:#fff;">15:00 – 00:00+</strong></td><td>Chopería + Karaoke</td><td>Mié – Vie</td><td><span class="badge badge-morado">Equipo B + C</span></td></tr>
+          <tr><td>🎉 Noche</td><td><strong style="color:#fff;">18:00 – 03:00</strong></td><td>Operación completa + show</td><td>Mar – Dom</td><td><span class="badge badge-rojo">Equipo C completo</span></td></tr>
+          <tr><td>🎧 Discoteca</td><td><strong style="color:#fff;">22:00 – 05:00</strong></td><td>Socios externos + DJ</td><td>Sáb (+ Vie especial)</td><td><span class="badge badge-morado">Discoteca</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:2rem;">
+    <div class="accent-line" style="background:#a855f7;"></div>
+    <h2>Ideas Sábados — Competir con la Competencia</h2>
+    <p>Estrategias especiales para maximizar el movimiento los sábados</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(29,185,84,0.15);">🎶</div><h3>Sábado BR Music Live</h3></div>
+      <p>Show exclusivo con bandas brasileñas en vivo (axé, pagode, sertanejo, forró). Entrada con consumición mínima. Experiencia única que la competencia no puede ofrecer.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(245,212,0,0.15);">🏆</div><h3>Batalla del Karaoke</h3></div>
+      <p>Competencia semanal con premio en consumición. El público vota por QR Code. Premio al ganador + galería de campeones en el local. Genera viralización en redes.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(123,47,190,0.15);">🎉</div><h3>Happy Hour Doble</h3></div>
+      <p>De 18h a 21h: chope doble para estudiantes con carnet universitario. Atrae al público antes de las fiestas de la competencia. Tema semanal (playa, copa, carnaval).</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(232,119,34,0.15);">🎱</div><h3>Torneo de Billar</h3></div>
+      <p>Campeonato mensual con llave y tabla visible en el local y en Instagram. Inscripción con consumición mínima. Genera recurrencia y competitividad sana.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(59,130,246,0.15);">🇧🇷</div><h3>Fútbol + Chope</h3></div>
+      <p>Transmisiones de grandes partidos con promoción de chope frío. Especialmente en fechas del Brasileirão y Copa. Decoración temática + comida de boteco.</p>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(200,16,46,0.15);">💃</div><h3>Pre-Party Discoteca</h3></div>
+      <p>La Chopería funciona como pre-party desde las 20h con DJ invitado. Migración natural a la Discoteca a las 22h con descuento en la entrada para quienes ya estaban.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= ORGANIGRAMA ============================= -->
+<div id="organigrama" class="section">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>Organigrama</h2>
+    <p>Estructura jerárquica completa del local</p>
+  </div>
+
+  <div class="card" style="padding:2rem;">
+    <div class="org-level">
+      <div class="org-node top" style="min-width:170px;">
+        <span class="role">Dirección</span>
+        <span class="name">Propietario / Gerente General</span>
+      </div>
+    </div>
+    <div class="org-connector"></div>
+    <div class="org-level">
+      <div class="org-node mid"><span class="role">Operacional</span><span class="name">Coordinador General</span></div>
+      <div class="org-node mid"><span class="role">Financiero</span><span class="name">Supervisor de Caja</span></div>
+      <div class="org-node mid"><span class="role">Técnico</span><span class="name">Sonidista / DJ</span></div>
+      <div class="org-node mid"><span class="role">Seguridad</span><span class="name">Guardia de Seguridad</span></div>
+    </div>
+    <div class="org-connector"></div>
+    <div class="org-level">
+      <div class="org-node"><span class="role">Chopería</span><span class="name">Mozo + Caja</span></div>
+      <div class="org-node"><span class="role">Karaoke</span><span class="name">DJ Karaoke + Mozo</span></div>
+      <div class="org-node"><span class="role">Billar</span><span class="name">Resp. Billar</span></div>
+      <div class="org-node"><span class="role">Discoteca</span><span class="name">Socios Ext. + DJ</span></div>
+      <div class="org-node"><span class="role">Cocina</span><span class="name">Cocinero + Ayudante</span></div>
+    </div>
+
+    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--card-border);">
+      <p style="font-size:12px; color:var(--muted); margin-bottom:1rem;">Distribución de Equipos por Turno:</p>
+      <div class="grid-3">
+        <div style="padding:1rem; background:rgba(29,185,84,0.07); border-radius:8px; border-left:3px solid var(--verde);">
+          <strong style="color:#4ade80; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Equipo A — Diurno</strong>
+          <p style="font-size:12px; color:#B0AEA6; margin-top:0.4rem;">06:30 – 15:00 (Lun–Vie)<br>2 cocina · 2 caja · 1 barra · 1 coord.</p>
+        </div>
+        <div style="padding:1rem; background:rgba(245,212,0,0.07); border-radius:8px; border-left:3px solid var(--amarillo);">
+          <strong style="color:#ffd700; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Equipo B — Transición</strong>
+          <p style="font-size:12px; color:#B0AEA6; margin-top:0.4rem;">15:00 – 00:00+ (Mié–Vie)<br>3 personas cobertura general</p>
+        </div>
+        <div style="padding:1rem; background:rgba(123,47,190,0.07); border-radius:8px; border-left:3px solid #a855f7;">
+          <strong style="color:#c084fc; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">Equipo C — Nocturno</strong>
+          <p style="font-size:12px; color:#B0AEA6; margin-top:0.4rem;">18:00 – 03:00+ (Mar–Dom)<br>3 mozos · 1 sup. · DJ · Karaoke · Seg. · 2 coc.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:2rem;">
+    <div class="accent-line" style="background:var(--amarillo);"></div>
+    <h2>Roles por Sector</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(29,185,84,0.15);">🍺</div><h3>Chopería (32 mesas)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Mozo/a (2–3 por turno)</strong> — Atención de mesas, comanda digital/física, servicio de chope</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Cajero/a (1)</strong> — Control de pagos, cierre de comandas</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Barman (1)</strong> — Operación de la chopera, cócteles, control del barril</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">DJ Chopería (1)</strong> — Selección musical, anuncios, gestión del escenario</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Sonidista (1)</strong> — Técnica de sonido para shows en vivo, micrófonos, iluminación</div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(245,212,0,0.15);">🎤</div><h3>Karaoke (16 mesas)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div><div><strong style="color:#fff;">DJ Karaoke (1)</strong> — Operación del sistema, selección de canciones, animación del show</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Mozo/a (1–2)</strong> — Atención exclusiva del sector karaoke, reservas BDay</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Recepcionista (1 FdS)</strong> — Control de reservas, check-in de grupos, decoración BDay</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Host/Animador (eventos)</strong> — Presentación temática, juegos, concurso karaoke</div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(59,130,246,0.15);">🎱</div><h3>Billar (7 mesas)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Responsable Billar (1)</strong> — Control de mesas, lista de espera, alquiler de tacos</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Mozo integrado</strong> — Comparte con Chopería, atiende mesas de billar</div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(123,47,190,0.15);">🎧</div><h3>Discoteca (Sábados)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div><div><strong style="color:#fff;">DJ Principal (socio externo)</strong> — Selección, mezcla, set completo</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Guardia de Seguridad (2+)</strong> — Control de entrada, capacidad, requisas</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Barman Discoteca (1–2)</strong> — Bar dedicado a la pista, drinks rápidos</div></li>
+        <li><div class="check-box"></div><div><strong style="color:#fff;">Coordinador General (1)</strong> — Supervisión, comunicación con socios, caja nocturna</div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= TURNOS ============================= -->
+<div id="turnos" class="section">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>Turnos y Relevos</h2>
+    <p>Gestión de horarios, cambios de turno y protocolos de relevo</p>
+  </div>
+
+  <div class="turno-card turno-a">
+    <div class="turno-header">
+      <span class="turno-title">🌅 Equipo A — Turno Diurno</span>
+      <span class="time-badge">06:30 – 15:00</span>
+    </div>
+    <p style="font-size:13px; color:#A0A09A; margin-bottom:0.7rem;"><strong style="color:#fff;">Días:</strong> Lunes a Viernes | <strong style="color:#fff;">Cobertura extendida Lun–Mar:</strong> hasta 18:00 (2 cajeras + 1)</p>
+    <div class="personal-list">
+      <span class="personal-item">👨‍🍳 Cocinero 1</span>
+      <span class="personal-item">👨‍🍳 Cocinero 2</span>
+      <span class="personal-item">💰 Cajera 1</span>
+      <span class="personal-item">💰 Cajera 2</span>
+      <span class="personal-item">🍺 Barra</span>
+      <span class="personal-item">📋 Coordinador</span>
+    </div>
+    <div style="margin-top:1rem; padding-top:0.9rem; border-top:1px solid rgba(29,185,84,0.2);">
+      <p style="font-size:12.5px; color:#A0A09A;"><strong style="color:#4ade80;">Protocolo de Relevo (15:00 hs):</strong> Cocineros pasan briefing de stock y pendientes. Cajeras hacen cierre parcial y entregan reporte. Coordinador alinea con Equipo B sobre reservas de la noche. Tiempo de superposición: 15 minutos.</p>
+    </div>
+  </div>
+
+  <div class="turno-card turno-b">
+    <div class="turno-header">
+      <span class="turno-title">🌆 Equipo B — Transición</span>
+      <span class="time-badge">15:00 – 00:00+</span>
+    </div>
+    <p style="font-size:13px; color:#A0A09A; margin-bottom:0.7rem;"><strong style="color:#fff;">Días:</strong> Miércoles a Viernes | Cobertura de tarde, preparación para operación nocturna</p>
+    <div class="personal-list">
+      <span class="personal-item">👤 Colaborador 1</span>
+      <span class="personal-item">👤 Colaborador 2</span>
+      <span class="personal-item">👤 Colaborador 3</span>
+    </div>
+    <div style="margin-top:1rem; padding-top:0.9rem; border-top:1px solid rgba(245,212,0,0.2);">
+      <p style="font-size:12.5px; color:#A0A09A;"><strong style="color:#ffd700;">Protocolo de Relevo (18:00 hs):</strong> Entrega de comandas abiertas al Equipo C. Briefing sobre reservas karaoke y shows en vivo. Caja hace pre-cierre. Equipo C asume progresivamente desde las 17:45.</p>
+    </div>
+  </div>
+
+  <div class="turno-card turno-c">
+    <div class="turno-header">
+      <span class="turno-title">🌙 Equipo C — Nocturno</span>
+      <span class="time-badge">18:00 – 03:00+</span>
+    </div>
+    <p style="font-size:13px; color:#A0A09A; margin-bottom:0.7rem;"><strong style="color:#fff;">Días:</strong> Martes a Domingo | <strong style="color:#fff;">Refuerzo FdS:</strong> +1 cocina, entrada desde martes</p>
+    <div class="personal-list">
+      <span class="personal-item">🛎 Mozo 1</span>
+      <span class="personal-item">🛎 Mozo 2</span>
+      <span class="personal-item">🛎 Mozo 3</span>
+      <span class="personal-item">💰 Cajero/a</span>
+      <span class="personal-item">📋 Supervisor</span>
+      <span class="personal-item">🎵 Sonidista</span>
+      <span class="personal-item">🎤 DJ Karaoke</span>
+      <span class="personal-item">🎧 DJ Chopería</span>
+      <span class="personal-item">🔒 Seguridad</span>
+      <span class="personal-item">👨‍🍳 Cocina 1</span>
+      <span class="personal-item">👨‍🍳 Cocina 2</span>
+      <span class="personal-item">⚡ Refuerzo FdS</span>
+    </div>
+    <div style="margin-top:1rem; padding-top:0.9rem; border-top:1px solid rgba(123,47,190,0.2);">
+      <p style="font-size:12.5px; color:#A0A09A;"><strong style="color:#c084fc;">Protocolo de Cierre (03:00 hs):</strong> Supervisor hace conferencia de caja con caja nocturna. Mozos hacen cierre de mesas y recolección de vasos. Cocina hace higienización. Seguridad confirma salida de todos los clientes. Registro de incidencias completado.</p>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:2rem;">
+    <div class="accent-line" style="background:var(--naranja);"></div>
+    <h2>Calendario de Cobertura Semanal</h2>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Día</th><th>06:30–15:00</th><th>15:00–18:00</th><th>18:00–Cierre</th><th>Observación</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong style="color:#fff;">Lunes</strong></td><td><span class="badge badge-verde">Equipo A</span></td><td><span class="badge badge-verde">Equipo A</span></td><td>—</td><td style="font-size:11.5px;">Cobertura Eq.A hasta 18h</td></tr>
+          <tr><td><strong style="color:#fff;">Martes</strong></td><td><span class="badge badge-verde">Equipo A</span></td><td><span class="badge badge-verde">Equipo A</span></td><td><span class="badge badge-morado">Equipo C</span></td><td style="font-size:11.5px;">Inicio Eq.C nocturno</td></tr>
+          <tr><td><strong style="color:#fff;">Miércoles</strong></td><td><span class="badge badge-verde">Equipo A</span></td><td><span class="badge badge-amarillo">Equipo B</span></td><td><span class="badge badge-morado">Equipo C</span></td><td style="font-size:11.5px;">Equipo B entra 15h</td></tr>
+          <tr><td><strong style="color:#fff;">Jueves</strong></td><td><span class="badge badge-verde">Equipo A</span></td><td><span class="badge badge-amarillo">Equipo B</span></td><td><span class="badge badge-morado">Equipo C</span></td><td style="font-size:11.5px;">Show en vivo Chopería</td></tr>
+          <tr><td><strong style="color:#fff;">Viernes</strong></td><td><span class="badge badge-verde">Equipo A</span></td><td><span class="badge badge-amarillo">Equipo B</span></td><td><span class="badge badge-morado">Equipo C</span></td><td style="font-size:11.5px;">Pre-weekend, promociones</td></tr>
+          <tr><td><strong style="color:#fff;">Sábado</strong></td><td>—</td><td>—</td><td><span class="badge badge-morado">Equipo C ++</span></td><td style="font-size:11.5px;">Discoteca + Refuerzo FdS</td></tr>
+          <tr><td><strong style="color:#fff;">Domingo</strong></td><td>—</td><td>—</td><td><span class="badge badge-morado">Equipo C</span></td><td style="font-size:11.5px;">Cierre más temprano</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= FLUJO ============================= -->
+<div id="flujo" class="section">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>Flujogramas Operacionales</h2>
+    <p>Procesos clave del local desde la atención hasta el cierre</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="font-family:'Syne',sans-serif; color:#fff; margin-bottom:1rem; font-size:0.95rem;">🚪 Flujo de Atención al Cliente</h3>
+      <div class="fluxo-step"><div class="fluxo-dot verde">1</div><div class="fluxo-content"><h4>Recepción / Entrada</h4><p>Seguridad verifica capacidad. Recepcionista encamina al sector. Identifica reservas o walk-in.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot amarillo">2</div><div class="fluxo-content"><h4>Asignación de Mesa</h4><p>Mozo recibe al cliente. Mesa asignada por sector. Abre comanda.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot naranja">3</div><div class="fluxo-content"><h4>Pedido y Servicio</h4><p>Menú presentado. Pedido registrado. Cocina/Barra notificada.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot morado">4</div><div class="fluxo-content"><h4>Consumición</h4><p>Servicio continuo. Mozo revisa mesa cada 15 min. Pedidos adicionales registrados.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot rojo">5</div><div class="fluxo-content"><h4>Cierre y Pago</h4><p>Cliente pide la cuenta. Caja emite total. Pago: efectivo/tarjeta/PIX. Caja cierra comanda.</p></div></div>
+    </div>
+    <div class="card">
+      <h3 style="font-family:'Syne',sans-serif; color:#fff; margin-bottom:1rem; font-size:0.95rem;">🎤 Flujo Karaoke — Evento BDay / Temático</h3>
+      <div class="fluxo-step"><div class="fluxo-dot morado">1</div><div class="fluxo-content"><h4>Reserva (anticipada)</h4><p>Cliente reserva por WhatsApp/Instagram. Confirma número de personas, fecha, tema.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot verde">2</div><div class="fluxo-content"><h4>Preparación del Sector</h4><p>Decoración temática montada 1h antes. Mesa VIP separada. Playlist personalizada lista.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot amarillo">3</div><div class="fluxo-content"><h4>Recepción VIP</h4><p>Cumpleañero/grupo recibido en la entrada. Brindis de bienvenida. Fotos para Stories.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot naranja">4</div><div class="fluxo-content"><h4>Show Karaoke</h4><p>DJ anuncia el tema. Dinámicas interactivas. Público paraguayo/BR integrado. Votación.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot rojo">5</div><div class="fluxo-content"><h4>Cierre y Fidelización</h4><p>Foto grupal para Stories del local. Cupón de descuento próxima visita. Evaluación Google.</p></div></div>
+    </div>
+    <div class="card">
+      <h3 style="font-family:'Syne',sans-serif; color:#fff; margin-bottom:1rem; font-size:0.95rem;">🌅 Flujo de Apertura (06:30 hs)</h3>
+      <div class="fluxo-step"><div class="fluxo-dot verde">1</div><div class="fluxo-content"><h4>Llegada Equipo A (06:15)</h4><p>Coordinador abre el local. Cocineros inician prep del desayuno. Barra prepara mise en place.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot amarillo">2</div><div class="fluxo-content"><h4>Verificación Pre-Apertura</h4><p>Checklist de limpieza. Stock básico verificado. Cajas confirman cambio inicial. Sistemas encendidos.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot naranja">3</div><div class="fluxo-content"><h4>Apertura 06:30</h4><p>Puerta abierta. Mozo posicionado. Menú de desayuno disponible. Música ambiente encendida.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot morado">4</div><div class="fluxo-content"><h4>Operación Desayuno (06:30–10:30)</h4><p>Servicio de desayuno. Cocina apoya barra. Comandas abiertas normalmente.</p></div></div>
+    </div>
+    <div class="card">
+      <h3 style="font-family:'Syne',sans-serif; color:#fff; margin-bottom:1rem; font-size:0.95rem;">🔒 Flujo de Cierre</h3>
+      <div class="fluxo-step"><div class="fluxo-dot naranja">1</div><div class="fluxo-content"><h4>Aviso de Cierre</h4><p>DJ anuncia "últimos pedidos" 30 min antes. Mozos avisan a las mesas. Seguridad alerta pista.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot amarillo">2</div><div class="fluxo-content"><h4>Cierre de Comandas</h4><p>Todos los clientes reciben su cuenta. Pagos procesados. Caja inicia reporte nocturno.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot morado">3</div><div class="fluxo-content"><h4>Salida de Clientes</h4><p>Seguridad conduce salida ordenada. Mozos recogen vasos y cubiertos. Mesas limpias.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot verde">4</div><div class="fluxo-content"><h4>Cierre Financiero</h4><p>Supervisor confirma caja. Reporte diario generado. Depósito o guarda del numerario. Firma supervisor.</p></div></div>
+      <div class="fluxo-step"><div class="fluxo-dot rojo">5</div><div class="fluxo-content"><h4>Higienización y Cierre</h4><p>Cocina higienizada. Bar limpio. Mesas organizadas. Sistemas apagados. Alarma activada.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= EDT ============================= -->
+<div id="edt" class="section">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>EDT — Estructura de Desglose del Trabajo</h2>
+    <p>Work Breakdown Structure para implantación y operación del local</p>
+  </div>
+
+  <div class="edt-item edt-l1"><div class="edt-num">1.0</div><div class="edt-content"><h4>IMPLANTACIÓN DEL LOCAL</h4><p>Todas las actividades de setup inicial del negocio</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">1.1</div><div class="edt-content"><h4>Infraestructura Física</h4><p>Montaje de sectores, muebles, equipamientos</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.1.1</div><div class="edt-content"><h4>Montaje Chopería (32 mesas)</h4><p>Mesas, sillas, escenario, iluminación, sistema de sonido</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.1.2</div><div class="edt-content"><h4>Montaje Karaoke (16 mesas)</h4><p>Sistema karaoke, pantalla, micrófonos, iluminación temática</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.1.3</div><div class="edt-content"><h4>Montaje Billar (7 mesas)</h4><p>Mesas de billar, tacos, iluminación overhead, lista de espera</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.1.4</div><div class="edt-content"><h4>Montaje Discoteca</h4><p>Pista, booth DJ, sistema de sonido profesional, iluminación de fiesta</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.1.5</div><div class="edt-content"><h4>Cocina y Barra</h4><p>Equipamiento de cocina, mise en place, choperas, refrigeración</p></div></div>
+  <div class="edt-item edt-l2" style="margin-top:0.4rem;"><div class="edt-num">1.2</div><div class="edt-content"><h4>Licencias y Documentación</h4><p>Habilitaciones comerciales, sanitarias, musicales</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.2.1</div><div class="edt-content"><h4>Licencia Municipal de Funcionamiento</h4><p>Municipio CDE — habilitación comercial</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.2.2</div><div class="edt-content"><h4>Habilitación Sanitaria</h4><p>Cocina y manipulación de alimentos (SENAVE/MSPBS)</p></div></div>
+  <div class="edt-item edt-l3"><div class="edt-num">1.2.3</div><div class="edt-content"><h4>Licencia de Música en Vivo</h4><p>Registro de artistas extranjeros, contratos</p></div></div>
+
+  <div class="edt-item edt-l1" style="margin-top:0.8rem;"><div class="edt-num">2.0</div><div class="edt-content"><h4>GESTIÓN DE PERSONAS</h4><p>Reclutamiento, capacitación y gestión de equipos</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">2.1</div><div class="edt-content"><h4>Reclutamiento y Selección</h4><p>Contratación de los 3 equipos + personal de apoyo</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">2.2</div><div class="edt-content"><h4>Capacitación Inicial</h4><p>Atención, sistema de caja, servicio de chope, karaoke</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">2.3</div><div class="edt-content"><h4>Definición de Turnos y Escalas</h4><p>Armado de grillas horarias, relevos, coberturas</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">2.4</div><div class="edt-content"><h4>Capacitación Continua</h4><p>Capacitaciones mensuales, estándares de atención, reciclajes</p></div></div>
+
+  <div class="edt-item edt-l1" style="margin-top:0.8rem;"><div class="edt-num">3.0</div><div class="edt-content"><h4>OPERACIONES DIARIAS</h4><p>Procesos recurrentes de funcionamiento</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">3.1</div><div class="edt-content"><h4>Operación Diurna</h4><p>Desayuno (06:30), almuerzo (11:00), transición tarde</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">3.2</div><div class="edt-content"><h4>Operación Nocturna</h4><p>Chopería, Karaoke, Billar, Shows en vivo, Discoteca</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">3.3</div><div class="edt-content"><h4>Control Financiero</h4><p>Apertura/cierre de caja, reportes diarios, conciliación</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">3.4</div><div class="edt-content"><h4>Gestión de Stock</h4><p>Pedidos de bebidas, insumos de cocina, control de barril</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">3.5</div><div class="edt-content"><h4>Reporte Diario de Operaciones</h4><p>Incidencias, control de socios, cierre de jornada — firmado por Coordinador y Socio Discoteca</p></div></div>
+
+  <div class="edt-item edt-l1" style="margin-top:0.8rem;"><div class="edt-num">4.0</div><div class="edt-content"><h4>MARKETING Y EVENTOS</h4><p>Promoción, captación y fidelización de clientes</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">4.1</div><div class="edt-content"><h4>Marketing Digital</h4><p>Instagram, TikTok, WhatsApp, Google Maps</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">4.2</div><div class="edt-content"><h4>Eventos Temáticos</h4><p>Karaoke temático, shows, torneos, fechas conmemorativas</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">4.3</div><div class="edt-content"><h4>Programa de Fidelización</h4><p>Tarjeta fidelidad, reservas VIP, convenios universitarios</p></div></div>
+  <div class="edt-item edt-l2"><div class="edt-num">4.4</div><div class="edt-content"><h4>Relación con Socios Discoteca</h4><p>Contratos, comunicación, coordinación de agenda, reporte firmado</p></div></div>
+</div>
+
+<!-- ============================= CHECKLISTS ============================= -->
+<div id="checklist" class="section">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>Checklists Operacionales</h2>
+    <p>Verificaciones obligatorias por sector y turno</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(29,185,84,0.15);">✅</div><h3>Apertura General (06:15 hs)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Luces y ventilación encendidas en todos los sectores</li>
+        <li><div class="check-box"></div>Verificación de limpieza (piso, baños, cocina)</li>
+        <li><div class="check-box"></div>Cambio inicial confirmado en caja</li>
+        <li><div class="check-box"></div>Stock de bebidas e insumos verificado</li>
+        <li><div class="check-box"></div>Sistema de sonido testeado (barra + ambiente)</li>
+        <li><div class="check-box"></div>Menú actualizado y disponible</li>
+        <li><div class="check-box"></div>Uniforme e higiene del equipo verificados</li>
+        <li><div class="check-box"></div>Temperatura de la chopera verificada</li>
+        <li><div class="check-box"></div>Mise en place de cocina completa</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(245,212,0,0.15);">🌆</div><h3>Pre-Operación Nocturna (17:45 hs)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Sistema karaoke testeado (micrófonos, pantalla, playlist)</li>
+        <li><div class="check-box"></div>Iluminación de show activada y testeada</li>
+        <li><div class="check-box"></div>Reservas del día confirmadas y mesas armadas</li>
+        <li><div class="check-box"></div>DJ informado sobre set y eventos especiales</li>
+        <li><div class="check-box"></div>Seguridad posicionado en la entrada</li>
+        <li><div class="check-box"></div>Stock nocturno (chope, bebidas) reabastecido</li>
+        <li><div class="check-box"></div>Mesas de billar verificadas (tacos, bolas)</li>
+        <li><div class="check-box"></div>Equipamiento de show en vivo verificado</li>
+        <li><div class="check-box"></div>WhatsApp de reservas revisado</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(200,16,46,0.15);">🔒</div><h3>Cierre General (03:00 hs)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Todas las comandas cerradas y pagadas</li>
+        <li><div class="check-box"></div>Caja confirmada y reporte firmado</li>
+        <li><div class="check-box"></div>Numerario guardado en lugar seguro</li>
+        <li><div class="check-box"></div>Cocina higienizada y alimentos guardados</li>
+        <li><div class="check-box"></div>Bar limpo, botellas guardadas</li>
+        <li><div class="check-box"></div>Todos los clientes salieron</li>
+        <li><div class="check-box"></div>Luces y equipos apagados</li>
+        <li><div class="check-box"></div>Puerta trasera y ventanas cerradas</li>
+        <li><div class="check-box"></div>Registro de incidencias completado</li>
+        <li><div class="check-box"></div>Reporte Diario firmado por Coordinador y Socio</li>
+        <li><div class="check-box"></div>Alarma activada</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(123,47,190,0.15);">🎤</div><h3>Checklist Karaoke / Show</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Sistema karaoke (software + actualización de canciones)</li>
+        <li><div class="check-box"></div>Micrófonos cargados y testeados (2 mínimo)</li>
+        <li><div class="check-box"></div>Pantalla y proyector funcionando</li>
+        <li><div class="check-box"></div>Playlist temática preparada</li>
+        <li><div class="check-box"></div>Decoración BDay montada (si hay reserva)</li>
+        <li><div class="check-box"></div>Material de votación (QR Code/formulario) disponible</li>
+        <li><div class="check-box"></div>Premios de competencia separados</li>
+        <li><div class="check-box"></div>Lista de espera para cantar creada</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(59,130,246,0.15);">🎧</div><h3>Checklist Discoteca (Sábado)</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Coordinación con socios externos confirmada</li>
+        <li><div class="check-box"></div>DJ confirmado con horario y set</li>
+        <li><div class="check-box"></div>Sistema de sonido profesional testeado</li>
+        <li><div class="check-box"></div>Iluminación de pista verificada</li>
+        <li><div class="check-box"></div>Seguridad extra contratado (2 mín.)</li>
+        <li><div class="check-box"></div>Control de capacidad definido</li>
+        <li><div class="check-box"></div>Bar de la discoteca abastecido</li>
+        <li><div class="check-box"></div>Reporte Diario preparado para firma del Socio</li>
+        <li><div class="check-box"></div>Difusión en redes realizada (48h antes)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(232,119,34,0.15);">👨‍🍳</div><h3>Checklist Cocina Diaria</h3></div>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Temperatura de heladera y freezer verificadas</li>
+        <li><div class="check-box"></div>Vencimiento de alimentos controlado</li>
+        <li><div class="check-box"></div>Plato del día definido e ingredientes separados</li>
+        <li><div class="check-box"></div>Mise en place completa para desayuno y almuerzo</li>
+        <li><div class="check-box"></div>Higiene personal (uniformes, guantes, gorros)</li>
+        <li><div class="check-box"></div>Pedido de reposición realizado (si es necesario)</li>
+        <li><div class="check-box"></div>Limpieza de cocina al cerrar turno</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= MARKETING ============================= -->
+<div id="marketing" class="section">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>Estrategias de Marketing</h2>
+    <p>Acciones para atraer estudiantes brasileños y público paraguayo</p>
+  </div>
+
+  <div class="section-header" style="margin-top:0;">
+    <div class="accent-line" style="background:var(--amarillo); width:28px;"></div>
+    <h2 style="font-size:1.3rem;">🎓 Marketing para Estudiantes Brasileños</h2>
+  </div>
+
+  <div class="grid-3">
+    <div class="mkt-card verde">
+      <h3>🎓 Convenio Universitario</h3>
+      <ul>
+        <li>Convenio con facultades BR en CDE (UCP, UPE, UNINTER, UPAP, UNIDA, etc.)</li>
+        <li>Descuento para carnet estudiantil válido</li>
+        <li>Difusión en grupos de WhatsApp de ingresantes</li>
+        <li>Stand en el día de bienvenida de ingresantes (febrero)</li>
+        <li>Happy hour exclusivo para cursos (noche de facultad)</li>
+      </ul>
+    </div>
+    <div class="mkt-card amarillo">
+      <h3>📱 Redes Sociales — Foco BR</h3>
+      <ul>
+        <li>Instagram en portugués con Reels diarios (behind the scenes)</li>
+        <li>TikTok con challenges y trends musicales BR</li>
+        <li>Stories mostrando shows y karaoke en vivo</li>
+        <li>Destacados: Menú, Eventos, BDay, Reservas</li>
+        <li>Influencers estudiantiles: alianzas con cuentas de "vida en CDE"</li>
+      </ul>
+    </div>
+    <div class="mkt-card naranja">
+      <h3>🍺 Promociones Estudiantiles</h3>
+      <ul>
+        <li>"Lunes del Estudiante" — chope a precio reducido</li>
+        <li>Caipirinha de la semana con tema regional BR</li>
+        <li>Combo almuerzo + postre para estudiantes</li>
+        <li>Tarjeta fidelidad: cada 10 chopes, gana 1</li>
+        <li>Cumpleaños del cliente: mesa VIP + regalo gratis</li>
+      </ul>
+    </div>
+    <div class="mkt-card rojo">
+      <h3>🎉 Eventos Temáticos BR</h3>
+      <ul>
+        <li>Noche de Carnaval (febrero) — disfraces, samba en vivo</li>
+        <li>Festa Junina con cuadrilla y forró</li>
+        <li>Noche del Axé/Pagode con músicos invitados</li>
+        <li>Copa de Brasil — transmisión con promociones especiales</li>
+        <li>Fiesta de Graduación — paquete grupal, reserva anticipada</li>
+      </ul>
+    </div>
+    <div class="mkt-card morado">
+      <h3>💬 WhatsApp Marketing</h3>
+      <ul>
+        <li>Lista VIP con programación semanal todos los lunes</li>
+        <li>Confirmación de reservas vía WhatsApp Business</li>
+        <li>Grupo de universitarios (con permiso) para promociones</li>
+        <li>Atención rápida y personalizada (respuesta en 30 min)</li>
+        <li>Feedback post-visita para mejoras continuas</li>
+      </ul>
+    </div>
+    <div class="mkt-card azul">
+      <h3>⭐ Google y Reseñas</h3>
+      <ul>
+        <li>Ficha Google Mi Negocio completa con fotos semanales</li>
+        <li>QR Code en las mesas para reseña en Google</li>
+        <li>Responder TODAS las reseñas (+/-) en 24h</li>
+        <li>Solicitar reseña al cerrar cuenta (mozo lo pide amablemente)</li>
+        <li>Meta: 4.5+ estrellas como diferencial vs. competencia</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:2rem;">
+    <div class="accent-line" style="background:#f87171;"></div>
+    <h2 style="font-size:1.3rem;">🇵🇾 Karaoke para Atraer al Público Paraguayo</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="font-family:'Syne',sans-serif; color:#fff; margin-bottom:0.9rem;">🎤 Noches Temáticas de Karaoke</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tema</th><th>Frecuencia</th><th>Público</th></tr></thead>
+          <tbody>
+            <tr><td>🇧🇷 Sertanejo Night</td><td>Jueves</td><td>BR + PY</td></tr>
+            <tr><td>🎵 Años 80/90 Español</td><td>Viernes</td><td>Paraguayo</td></tr>
+            <tr><td>🔥 Crossover BR/PY</td><td>Sábado</td><td>Mixto</td></tr>
+            <tr><td>💛 Pagode & Cumbia</td><td>Miércoles</td><td>BR + PY</td></tr>
+            <tr><td>🌙 Baladas Internacionales</td><td>Domingo</td><td>Todos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-family:'Syne',sans-serif; color:#fff; margin-bottom:0.9rem;">🏆 Formato Batalla del Karaoke</h3>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Inscripciones hasta las 21h por QR Code en la mesa</li>
+        <li><div class="check-box"></div>Cada participante canta 1 canción (2 min máx)</li>
+        <li><div class="check-box"></div>Público vota vía formulario/WhatsApp en vivo</li>
+        <li><div class="check-box"></div>Top 3 cantan nuevamente (final)</li>
+        <li><div class="check-box"></div>Premio: vale consumición + trofeo semanal</li>
+        <li><div class="check-box"></div>Video del ganador publicado en Instagram</li>
+        <li><div class="check-box"></div>Hall of Fame mensual en la pared del local</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:1.5rem;">
+    <div class="accent-line" style="background:#fb923c;"></div>
+    <h2 style="font-size:1.3rem;">🎂 Paquete BDay — Reservas de Cumpleaños</h2>
+  </div>
+
+  <div class="grid-3">
+    <div class="card" style="border-color:rgba(29,185,84,0.28);">
+      <h3 style="font-family:'Syne',sans-serif; color:#4ade80; margin-bottom:0.8rem;">🥂 BDay Básico</h3>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Mesa reservada decorada</li>
+        <li><div class="check-box"></div>Cumpleaños cantado por el DJ</li>
+        <li><div class="check-box"></div>Foto en la pantalla con el nombre</li>
+        <li><div class="check-box"></div>Brindis de bienvenida (sin costo)</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(245,212,0,0.38);">
+      <h3 style="font-family:'Syne',sans-serif; color:#ffd700; margin-bottom:0.8rem;">👑 BDay Premium</h3>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Todo el básico +</li>
+        <li><div class="check-box"></div>Mesa VIP exclusiva (2h reservada)</li>
+        <li><div class="check-box"></div>Decoración personalizada (nombre/tema)</li>
+        <li><div class="check-box"></div>Set de canciones del cumpleañero</li>
+        <li><div class="check-box"></div>Reels para el Instagram del cumpleañero</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(123,47,190,0.38);">
+      <h3 style="font-family:'Syne',sans-serif; color:#c084fc; margin-bottom:0.8rem;">🎊 BDay Grupo (10+)</h3>
+      <ul class="checklist">
+        <li><div class="check-box"></div>Todo el premium +</li>
+        <li><div class="check-box"></div>Sector karaoke exclusivo por 1h</li>
+        <li><div class="check-box"></div>Menú especial grupo (promoción)</li>
+        <li><div class="check-box"></div>Animación con host/MC</li>
+        <li><div class="check-box"></div>Descuento progresivo por persona</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= ROLES ============================= -->
+<div id="roles" class="section">
+  <div class="section-header">
+    <div class="accent-line"></div>
+    <h2>Descripción de Roles</h2>
+    <p>Responsabilidades detalladas de cada función en el local</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(245,212,0,0.15);">📋</div><h3>Coordinador / Supervisor</h3></div>
+      <span class="badge badge-verde">Equipo A</span><span class="badge badge-amarillo">Equipo B</span><span class="badge badge-morado">Equipo C</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Apertura y cierre del local</li>
+        <li><div class="check-box"></div>Gestión del equipo en el turno</li>
+        <li><div class="check-box"></div>Resolución de conflictos con clientes</li>
+        <li><div class="check-box"></div>Supervisión de caja y reportes</li>
+        <li><div class="check-box"></div>Comunicación con proveedores</li>
+        <li><div class="check-box"></div>Control de stock diario</li>
+        <li><div class="check-box"></div>Completar y firmar el Reporte Diario de Operaciones</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(29,185,84,0.15);">🛎</div><h3>Mozo / Moza</h3></div>
+      <span class="badge badge-verde">Todos los turnos</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Atención de las mesas del sector asignado</li>
+        <li><div class="check-box"></div>Apertura, gestión y cierre de comandas</li>
+        <li><div class="check-box"></div>Conocimiento del menú completo</li>
+        <li><div class="check-box"></div>Limpieza y organización de las mesas</li>
+        <li><div class="check-box"></div>Comunicación con cocina y barra</li>
+        <li><div class="check-box"></div>Fidelización y trato excepcional al cliente</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(59,130,246,0.15);">💰</div><h3>Cajero/a</h3></div>
+      <span class="badge badge-verde">Equipo A</span><span class="badge badge-morado">Equipo C</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Apertura de caja con cambio inicial confirmado</li>
+        <li><div class="check-box"></div>Procesamiento de pagos (efectivo/tarjeta/PIX)</li>
+        <li><div class="check-box"></div>Cierre de comandas y emisión de totales</li>
+        <li><div class="check-box"></div>Reporte de ventas por turno</li>
+        <li><div class="check-box"></div>Control de sangría y verificación de billetes</li>
+        <li><div class="check-box"></div>Pre-cierre al pasar el turno</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(232,119,34,0.15);">👨‍🍳</div><h3>Cocinero/a</h3></div>
+      <span class="badge badge-verde">Equipo A</span><span class="badge badge-morado">Equipo C</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Preparación de desayuno (06:30–10:30)</li>
+        <li><div class="check-box"></div>Plato del día y a la carta para almuerzo</li>
+        <li><div class="check-box"></div>Control de temperatura y vencimiento de alimentos</li>
+        <li><div class="check-box"></div>Higienización completa al final del turno</li>
+        <li><div class="check-box"></div>Comunicar falta de stock al coordinador</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(123,47,190,0.15);">🎵</div><h3>Sonidista / DJ Chopería</h3></div>
+      <span class="badge badge-morado">Equipo C</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Setup y soundcheck antes de los shows en vivo</li>
+        <li><div class="check-box"></div>Operación de mesa de sonido durante el show</li>
+        <li><div class="check-box"></div>Selección musical ambiente (pre y post-show)</li>
+        <li><div class="check-box"></div>Mantenimiento básico de equipos</li>
+        <li><div class="check-box"></div>Coordinación con músicos invitados</li>
+        <li><div class="check-box"></div>Grabación de shows para contenido digital</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(200,16,46,0.15);">🔒</div><h3>Guardia de Seguridad</h3></div>
+      <span class="badge badge-morado">Equipo C</span><span class="badge badge-rojo">Discoteca</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Control de entrada y capacidad máxima</li>
+        <li><div class="check-box"></div>Verificación de mayoría de edad (documento)</li>
+        <li><div class="check-box"></div>Prevención y resolución de conflictos</li>
+        <li><div class="check-box"></div>Comunicación constante con coordinador</li>
+        <li><div class="check-box"></div>Ronda periódica por el local</li>
+        <li><div class="check-box"></div>Gestión de la salida ordenada al cierre</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(245,212,0,0.15);">🎤</div><h3>DJ Karaoke</h3></div>
+      <span class="badge badge-morado">Equipo C</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Gestión del sistema karaoke (software + catálogo)</li>
+        <li><div class="check-box"></div>Animación y presentación del show</li>
+        <li><div class="check-box"></div>Gestión de la lista de espera</li>
+        <li><div class="check-box"></div>Conducción de eventos temáticos y batallas</li>
+        <li><div class="check-box"></div>Interacción con público (BR y PY)</li>
+        <li><div class="check-box"></div>Actualización semanal del catálogo musical</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:rgba(29,185,84,0.15);">🍺</div><h3>Barman / Barra</h3></div>
+      <span class="badge badge-verde">Equipo A</span><span class="badge badge-morado">Equipo C</span>
+      <ul class="checklist" style="margin-top:0.8rem;">
+        <li><div class="check-box"></div>Operación de la chopera (temperatura, mantenimiento)</li>
+        <li><div class="check-box"></div>Preparación de cócteles y bebidas especiales</li>
+        <li><div class="check-box"></div>Control de cambio de barriles</li>
+        <li><div class="check-box"></div>Limpieza e higiene del bar constantemente</li>
+        <li><div class="check-box"></div>Control de consumo de bebidas por pedido</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1rem; background:rgba(29,185,84,0.05); border-color:rgba(29,185,84,0.18);">
+    <h3 style="font-family:'Syne',sans-serif; color:#fff; margin-bottom:0.9rem;">📊 Cuadro Resumen de Personal</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Función</th><th>Equipo A</th><th>Equipo B</th><th>Equipo C</th><th>Refuerzo FdS</th></tr></thead>
+        <tbody>
+          <tr><td>Cocinero/a</td><td>2</td><td>—</td><td>2</td><td>+1</td></tr>
+          <tr><td>Cajero/a</td><td>2</td><td>1 (cobertura)</td><td>1</td><td>—</td></tr>
+          <tr><td>Mozo/a</td><td>—</td><td>1</td><td>3</td><td>+1</td></tr>
+          <tr><td>Barman/Barra</td><td>1</td><td>—</td><td>1</td><td>—</td></tr>
+          <tr><td>Coordinador</td><td>1</td><td>1</td><td>1</td><td>—</td></tr>
+          <tr><td>DJ / Sonidista</td><td>—</td><td>—</td><td>2 (DJ Chop. + DJ Kar.)</td><td>—</td></tr>
+          <tr><td>Seguridad</td><td>—</td><td>—</td><td>1</td><td>+1 (discoteca)</td></tr>
+          <tr><td><strong style="color:#fff;">TOTAL</strong></td><td><strong style="color:#4ade80;">6</strong></td><td><strong style="color:#ffd700;">3</strong></td><td><strong style="color:#c084fc;">11–12</strong></td><td><strong style="color:#fb923c;">+3</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= REPORTE DIARIO ============================= -->
+<div id="reporte" class="section">
+  <div class="section-header">
+    <div class="accent-line" style="background:var(--amarillo);"></div>
+    <h2>Reporte Diario de Operaciones y Eventos</h2>
+    <p>Documento oficial de cierre de jornada — unifica todos los sectores (Billar, Karaoke y Discoteca)</p>
+  </div>
+
+  <div class="alerta">
+    <span>⚠️</span>
+    <span><strong>Uso obligatorio:</strong> Este reporte debe completarse y firmarse al cierre de cada jornada nocturna. Cuando opere la Discoteca con socios externos, la firma del Representante/Promotor es obligatoria para evitar reclamos posteriores sobre daños o ventas.</span>
+  </div>
+
+  <div class="reporte-wrapper">
+    <div class="reporte-header">
+      <div>
+        <h2>📅 Reporte Diario de Operaciones</h2>
+        <p>RUMBA STAGE — Ciudad del Este, Paraguay</p>
+      </div>
+      <div class="reporte-badge">Documento Oficial</div>
+    </div>
+
+    <div class="reporte-body">
+
+      <!-- Encabezado -->
+      <div class="rep-meta">
+        <div class="rep-field">
+          <span class="rep-label">Fecha</span>
+          <input class="rep-input" type="text" placeholder="___  /  ___  /  2026" />
+        </div>
+        <div class="rep-field">
+          <span class="rep-label">Día de la semana</span>
+          <div class="dia-selector">
+            <button class="dia-btn" onclick="toggleDia(this)">LUN</button>
+            <button class="dia-btn" onclick="toggleDia(this)">MAR</button>
+            <button class="dia-btn" onclick="toggleDia(this)">MIÉ</button>
+            <button class="dia-btn" onclick="toggleDia(this)">JUE</button>
+            <button class="dia-btn" onclick="toggleDia(this)">VIE</button>
+            <button class="dia-btn" onclick="toggleDia(this)">SÁB</button>
+            <button class="dia-btn" onclick="toggleDia(this)">DOM</button>
+          </div>
+        </div>
+        <div class="rep-field">
+          <span class="rep-label">Responsable (Coordinador)</span>
+          <input class="rep-input" type="text" placeholder="Nombre completo del coordinador" />
+        </div>
+      </div>
+
+      <!-- Sección 1 -->
+      <div class="rep-section-title">
+        <div class="rep-section-num">1</div>
+        Resumen de Sectores — Estado al Cierre
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="sector-table">
+          <thead>
+            <tr>
+              <th style="min-width:150px;">Sector</th>
+              <th style="min-width:140px;">¿Hubo Incidentes?</th>
+              <th>Breve Descripción / Observaciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="sector-name">🍺 Chopería / Billar</span></td>
+              <td>
+                <div class="incident-toggle">
+                  <button class="tog-btn yes" onclick="toggleIncident(this,'yes')">Sí</button>
+                  <button class="tog-btn no"  onclick="toggleIncident(this,'no')">No</button>
+                </div>
+              </td>
+              <td><input class="rep-input" type="text" placeholder="Sin novedad / Descripción del incidente..." style="font-size:12.5px;" /></td>
+            </tr>
+            <tr>
+              <td><span class="sector-name">🎤 Karaoke</span></td>
+              <td>
+                <div class="incident-toggle">
+                  <button class="tog-btn yes" onclick="toggleIncident(this,'yes')">Sí</button>
+                  <button class="tog-btn no"  onclick="toggleIncident(this,'no')">No</button>
+                </div>
+              </td>
+              <td><input class="rep-input" type="text" placeholder="Sin novedad / Descripción del incidente..." style="font-size:12.5px;" /></td>
+            </tr>
+            <tr>
+              <td><span class="sector-name">🎧 Discoteca (Terceros)</span></td>
+              <td>
+                <div class="incident-toggle">
+                  <button class="tog-btn yes" onclick="toggleIncident(this,'yes')">Sí</button>
+                  <button class="tog-btn no"  onclick="toggleIncident(this,'no')">No</button>
+                </div>
+              </td>
+              <td><input class="rep-input" type="text" placeholder="Sin novedad / Descripción del incidente..." style="font-size:12.5px;" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sección 2 -->
+      <div class="rep-section-title">
+        <div class="rep-section-num">2</div>
+        Control de Socios Externos — Discoteca
+      </div>
+
+      <div class="socios-grid">
+        <div class="rep-field">
+          <span class="rep-label">Nombre del Promotor / Socio</span>
+          <input class="rep-input" type="text" placeholder="Nombre completo del promotor" />
+        </div>
+        <div class="rep-field">
+          <span class="rep-label">Hora de Inicio del Evento</span>
+          <input class="rep-input" type="text" placeholder="__ : __ hs" />
+        </div>
+        <div class="rep-field">
+          <span class="rep-label">Hora de Finalización</span>
+          <input class="rep-input" type="text" placeholder="__ : __ hs" />
+        </div>
+        <div class="rep-field">
+          <span class="rep-label">Afluencia Estimada (personas)</span>
+          <input class="rep-input" type="text" placeholder="Cantidad de personas" />
+        </div>
+        <div class="rep-field" style="grid-column: 1 / -1;">
+          <span class="rep-label">Comportamiento de Seguridad</span>
+          <div class="seg-rating" style="margin-top:4px;">
+            <button class="seg-btn excelente" onclick="toggleSeg(this,'excelente')">✅ Excelente</button>
+            <button class="seg-btn regular"   onclick="toggleSeg(this,'regular')">⚠️ Regular</button>
+            <button class="seg-btn mal"        onclick="toggleSeg(this,'mal')">❌ Mal (detallar abajo)</button>
+          </div>
+        </div>
+        <div class="rep-field" style="grid-column: 1 / -1;">
+          <span class="rep-label">Daños a la Infraestructura</span>
+          <input class="rep-input" type="text" placeholder="Ej: Mesa rota, vidrio roto, equipo dañado — o escribir 'Sin daños'" />
+        </div>
+      </div>
+
+      <!-- Sección 3 -->
+      <div class="rep-section-title">
+        <div class="rep-section-num">3</div>
+        Gestión de RRHH — Personal de Refuerzo y Novedades
+      </div>
+
+      <p style="font-size:12px; color:var(--muted); margin-bottom:0.8rem;">Personal de Refuerzo (Viernes / Sábados):</p>
+      <div class="refuerzo-row">
+        <div class="rep-field"><span class="rep-label">Nombre</span><input class="rep-input" type="text" placeholder="Nombre del colaborador" /></div>
+        <div class="rep-field"><span class="rep-label">Puesto</span><input class="rep-input" type="text" placeholder="Función / Rol" /></div>
+        <div class="rep-field"><span class="rep-label">Hora de Salida</span><input class="rep-input" type="text" placeholder="__ : __ hs" /></div>
+      </div>
+      <div class="refuerzo-row">
+        <div class="rep-field"><input class="rep-input" type="text" placeholder="Nombre del colaborador" /></div>
+        <div class="rep-field"><input class="rep-input" type="text" placeholder="Función / Rol" /></div>
+        <div class="rep-field"><input class="rep-input" type="text" placeholder="__ : __ hs" /></div>
+      </div>
+
+      <div class="rep-field" style="margin-top:0.8rem;">
+        <span class="rep-label">Inasistencias / Tardanzas</span>
+        <input class="rep-input" type="text" placeholder="Nombre del colaborador — motivo o sin novedades" />
+      </div>
+
+      <!-- Sección 4 -->
+      <div class="rep-section-title">
+        <div class="rep-section-num">4</div>
+        Incidencias Técnicas y de Stock
+      </div>
+
+      <div class="socios-grid">
+        <div class="rep-field" style="grid-column: 1 / -1;">
+          <span class="rep-label">Equipamiento (Audio, Luces, Billar, etc.)</span>
+          <input class="rep-input" type="text" placeholder="Ej: Micrófono 2 con falla, taco mesa 3 roto — o 'Sin incidencias'" />
+        </div>
+        <div class="rep-field" style="grid-column: 1 / -1;">
+          <span class="rep-label">Quiebre de Stock (¿Se terminó algo?)</span>
+          <input class="rep-input" type="text" placeholder="Ej: Se agotó el barril N°2 a las 01:00 hs — o 'Sin quiebres'" />
+        </div>
+      </div>
+
+      <!-- Sección 5 -->
+      <div class="rep-section-title">
+        <div class="rep-section-num">5</div>
+        Resumen Financiero <span style="font-size:10px; font-weight:400; color:var(--muted); text-transform:none; letter-spacing:0;">(Solo para Gerencia)</span>
+      </div>
+
+      <div class="fin-grid">
+        <div class="fin-card">
+          <div class="fin-label">Ventas Turno Día</div>
+          <div class="fin-input-wrap"><span class="currency">$</span><input class="rep-input" type="text" placeholder="0.00" style="font-size:15px; font-weight:600;" /></div>
+        </div>
+        <div class="fin-card">
+          <div class="fin-label">Ventas Turno Noche (Bar/Karaoke)</div>
+          <div class="fin-input-wrap"><span class="currency">$</span><input class="rep-input" type="text" placeholder="0.00" style="font-size:15px; font-weight:600;" /></div>
+        </div>
+        <div class="fin-card">
+          <div class="fin-label">Ventas Discoteca (si corresponde)</div>
+          <div class="fin-input-wrap"><span class="currency">$</span><input class="rep-input" type="text" placeholder="0.00" style="font-size:15px; font-weight:600;" /></div>
+        </div>
+        <div class="fin-card" style="border-color:rgba(200,16,46,0.3);">
+          <div class="fin-label">Diferencias de Caja (+/-)</div>
+          <div class="fin-input-wrap"><span class="currency" style="color:#f87171;">$</span><input class="rep-input" type="text" placeholder="0.00" style="font-size:15px; font-weight:600;" /></div>
+        </div>
+      </div>
+
+      <!-- Comentarios adicionales -->
+      <div class="rep-section-title" style="margin-top:1.5rem;">
+        <div class="rep-section-num" style="background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.15); color:#E8E6DE;">📝</div>
+        Espacio para Comentarios Adicionales
+      </div>
+
+      <textarea class="rep-textarea" placeholder="Ejemplo: 'Hubo una pelea menor en el sector discoteca, seguridad de terceros intervino. Se rompió un taco de billar en la mesa 2.' &#10;Use este espacio para cualquier observación relevante que no encaje en las secciones anteriores."></textarea>
+
+      <!-- Firmas -->
+      <div class="rep-section-title" style="margin-top:1.5rem;">
+        <div class="rep-section-num" style="background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.15); color:#E8E6DE;">✍️</div>
+        Firmas de Cierre — Obligatorio
+      </div>
+
+      <div class="alerta" style="margin-bottom:1rem;">
+        <span>📌</span>
+        <span>Ambas firmas son <strong>obligatorias</strong> al finalizar el turno nocturno cuando opera la Discoteca. Esto protege al local ante cualquier reclamo posterior sobre daños, diferencias de caja o incidentes de seguridad.</span>
+      </div>
+
+      <div class="firma-row">
+        <div class="firma-box">
+          <p>Firma del Coordinador del Local</p>
+          <div class="firma-line"></div>
+          <div class="firma-sublabel">Nombre y cargo</div>
+          <div style="margin-top:0.8rem; display:flex; gap:8px; align-items:center;">
+            <span style="font-size:11px; color:var(--muted);">Hora:</span>
+            <input class="rep-input" type="text" placeholder="__ : __ hs" style="max-width:100px;" />
+          </div>
+        </div>
+        <div class="firma-box" style="border-color:rgba(245,212,0,0.2);">
+          <p style="color:var(--amarillo);">Firma del Representante / Promotor (Discoteca)</p>
+          <div class="firma-line" style="border-color:rgba(245,212,0,0.2);"></div>
+          <div class="firma-sublabel">Nombre del promotor / socio externo</div>
+          <div style="margin-top:0.8rem; display:flex; gap:8px; align-items:center;">
+            <span style="font-size:11px; color:var(--muted);">Hora:</span>
+            <input class="rep-input" type="text" placeholder="__ : __ hs" style="max-width:100px;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="btn-group">
+        <button class="btn-action" onclick="imprimirReporte()">🖨️ Imprimir Reporte</button>
+        <button class="btn-action secondary" onclick="limpiarReporte()">🗑️ Limpiar Formulario</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Recomendaciones de uso -->
+  <div class="section-header" style="margin-top:2.5rem;">
+    <div class="accent-line" style="background:var(--verde);"></div>
+    <h2>Recomendaciones de Uso</h2>
+    <p>Buenas prácticas para garantizar la efectividad del reporte</p>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">1</div>
+    <div>
+      <h4>Copia Digital o Física</h4>
+      <p>Si usás papel, que sea un libro de actas foliado para que no se pierdan hojas. Si es digital, un grupo de WhatsApp de "Reportes" donde se suba la foto de este formato completo es muy efectivo. Mantener historial de al menos 3 meses.</p>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">2</div>
+    <div>
+      <h4>Firma Obligatoria al Cierre</h4>
+      <p>Al finalizar el turno nocturno, el Coordinador y el Representante de la Discoteca (Socio) deben firmar el reporte para evitar reclamos posteriores sobre daños o ventas. Sin firma del socio, el local no asume responsabilidades de los terceros.</p>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">3</div>
+    <div>
+      <h4>Mantenimiento Preventivo</h4>
+      <p>Usá la sección de "Incidencias Técnicas" para programar reparaciones el lunes a la mañana, antes de la apertura de las 11:00 hs. Así el equipo técnico tiene tiempo de actuar antes del siguiente turno nocturno.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center; padding:2.5rem 2rem; border-top:1px solid var(--card-border); color:var(--muted); font-size:11.5px;">
+  <strong style="color:var(--amarillo); font-family:'Syne',sans-serif; font-size:13.5px;">RUMBA STAGE</strong> — Plan de Gestión Operacional Completo<br>
+  Ciudad del Este, Paraguay · Documento de Gestión Interna · 2026
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const ids = ['vision','organigrama','turnos','flujo','edt','checklist','marketing','roles','reporte'];
+  const idx = ids.indexOf(id);
+  if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleDia(btn) {
+  btn.closest('.dia-selector').querySelectorAll('.dia-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleIncident(btn, type) {
+  const row = btn.closest('.incident-toggle');
+  row.querySelectorAll('.tog-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleSeg(btn, type) {
+  const container = btn.closest('.seg-rating');
+  container.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function imprimirReporte() {
+  window.print();
+}
+
+function limpiarReporte() {
+  if (confirm('¿Limpiar todos los campos del reporte?')) {
+    document.querySelectorAll('#reporte .rep-input, #reporte .rep-textarea').forEach(el => el.value = '');
+    document.querySelectorAll('#reporte .dia-btn, #reporte .tog-btn, #reporte .seg-btn').forEach(b => b.classList.remove('active'));
+  }
+}
+</script>
+
+<style>
+@media print {
+  nav, .btn-group { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .section { display: none !important; }
+  #reporte { display: block !important; padding: 1rem !important; }
+  .reporte-wrapper { border: 1px solid #ccc !important; }
+  .rep-input, .rep-textarea { background: #f9f9f9 !important; border: 1px solid #ccc !important; color: #000 !important; }
+  .rep-section-title { color: #333 !important; border-bottom-color: #ccc !important; }
+  .rep-section-num { background: #eee !important; border-color: #ccc !important; color: #333 !important; }
+  .reporte-header { background: #1a3a0a !important; }
+  .firma-line { border-bottom: 1px solid #999 !important; height: 40px !important; }
+}
+</style>
+</body>
+</html>
